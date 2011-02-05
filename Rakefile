@@ -19,5 +19,8 @@ namespace :js do
       end
     end
   end
+  
+  desc "Pulls all javascript files to project"
+  task :all => [ :jquery, :underscore ]
 end
 
