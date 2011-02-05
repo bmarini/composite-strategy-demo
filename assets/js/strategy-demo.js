@@ -14,6 +14,10 @@ $( document ).ready( function( )
 			return '<div class="module ' + this.type + '">Module: ' + this.type + '</div>';
 		};
 		
+		// this method tries to find the first tag by name
+		// if there is one, it returns it, else it returns undefined
+		// this is handy as js undefined is falsy so i can use it
+		// in selects and other ops
 		this.tag = function( tagName )
 		{
 			return _( this.tags ).detect( function( tag ){ return tag[ tagName ]; } );
