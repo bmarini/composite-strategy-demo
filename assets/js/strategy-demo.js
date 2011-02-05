@@ -33,6 +33,7 @@ $( document ).ready( function( )
 	
 	// make a collection of modules
 	var modules = [ ];
+	var branded_modules = [];
 	
 	// push three featured modules to the modules array
 	// they have a qualifying field to sort them on, like date
@@ -42,8 +43,8 @@ $( document ).ready( function( )
 	
 	// push two brand modules to the modules array
 	// they have a tag that denotes special attention from a strategy
-	modules.push( new Module( 'blue', [ { brand : true } ] ) );
-	modules.push( new Module( 'blue', [ { brand : true } ] ) );
+	branded_modules.push( new Module( 'blue', [ { brand : true } ] ) );
+	branded_modules.push( new Module( 'blue', [ { brand : true } ] ) );
 	
 	// push ten other modules to the array
 	// these will be of other random colors to set them apart
@@ -72,6 +73,8 @@ $( document ).ready( function( )
 
 		// remove the featured module from the modules list
 		modules.splice( $.inArray( feature, modules ), 1 );
+		
+		feature.type += ' main';
 		
 		// add the features module to the front of the list
 		modules.unshift( feature );
@@ -104,7 +107,7 @@ $( document ).ready( function( )
 		INTERESTING!
 	*/
 	// comment this out to see what the strategies look like without this composited
-	strategies.push( rightColumnStrategy );
+  // strategies.push( rightColumnStrategy );
 	
 	/*
 		INTERESTING!
@@ -122,6 +125,8 @@ $( document ).ready( function( )
 	var composition = _.compose.apply( this, strategies );
 	
 	// display the modules
+	_(branded_modules).each( function(m){ $('#branded').append( m.toElement() ); });
+
 	_( composition( modules ) ).each( function( module )
 	{
 		$( '#modules' ).append( module.toElement( ) );
