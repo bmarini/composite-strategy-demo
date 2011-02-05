@@ -1,5 +1,8 @@
 $( document ).ready( function( )
 {
+	// group mixin to underscore, specialized to groups of 3 for this demo
+	_.mixin( { group : function( array ){ var result = [ ]; while( array.length ){ result.push( array.splice( 0, 3 ) ); } return result; } } );
+	
 	// module definition
 	var Module = function( type, tags )
 	{
@@ -69,16 +72,46 @@ $( document ).ready( function( )
 		// add the features module to the front of the list
 		modules.unshift( feature );
 		
+		// pass on the altered list
 		return modules;
 	};
 	
-	strategies.push( featuredModuleStrategy );
+	// strategy to put the brand modules in the right column
+	var rightColumnStrategy = function( modules )
+	{
+		// select all modules with a brand tag
+		var branded = _( modules ).select( function( module ){ return module.tag( 'brand' ); } );
+		
+		// get all other modules (goddamn _.without.apply wasn't working, maybe its the whisky)
+		var others = _( modules ).reject( function( module ){ return _( branded ).include( module ); } );
+		
+		// zip up the branded modules after each group of 3
+		var zipped = _( others ).chain( ).group( ).zip( branded ).flatten( ).compact( ).value( );
+
+		// pass on the altered list
+		return zipped;
+	};
 	
 	//--------------------------------------------------------
 	// MODULE DISPLAY
 	//--------------------------------------------------------
 	
-	// randomize the modules, just for kicks
+	/*
+		INTERESTING!
+	*/
+	// comment this out to see what the strategies look like without this composited
+	strategies.push( rightColumnStrategy );
+	
+	/*
+		INTERESTING!
+	*/
+	// comment this out to see what the strategies look like without this composited
+	strategies.push( featuredModuleStrategy );
+	
+	/*
+		INTERESTING!
+	*/
+	// randomize the modules, just for kicks. you can take this out if you want.
 	modules = _( modules ).sortBy( Math.random );
 	
 	// compose the display strategies
